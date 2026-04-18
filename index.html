@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whale Animation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        svg {
+            display: block;
+            max-width: 800px;
+            height: auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background waves -->
+            <defs>
+                <style>
+                    @keyframes wave1 {
+                        0% { transform: translateX(0); }
+                        100% { transform: translateX(60px); }
+                    }
+                    
+                    @keyframes wave2 {
+                        0% { transform: translateX(0); }
+                        100% { transform: translateX(-60px); }
+                    }
+                    
+                    @keyframes swim {
+                        0%, 100% { transform: translateX(-50px); }
+                        50% { transform: translateX(50px); }
+                    }
+                    
+                    @keyframes tailWag {
+                        0%, 100% { transform: rotateZ(0deg); }
+                        50% { transform: rotateZ(10deg); }
+                    }
+                    
+                    .wave-group1 {
+                        animation: wave1 4s linear infinite;
+                    }
+                    
+                    .wave-group2 {
+                        animation: wave2 5s linear infinite;
+                    }
+                    
+                    .whale {
+                        animation: swim 6s ease-in-out infinite;
+                    }
+                    
+                    .tail {
+                        animation: tailWag 0.6s ease-in-out infinite;
+                        transform-origin: 680px 280px;
+                    }
+                    
+                    /* Drawing animation */
+                    .whale-outline {
+                        stroke-dasharray: 1000;
+                        stroke-dashoffset: 1000;
+                        animation: draw 3s ease-in-out forwards;
+                    }
+                    
+                    @keyframes draw {
+                        0% { stroke-dashoffset: 1000; }
+                        100% { stroke-dashoffset: 0; }
+                    }
+                    
+                    /* Coloring animation */
+                    .whale-fill {
+                        fill: #e0f4ff;
+                        animation: colorFill 2s ease-in-out 3s forwards;
+                        opacity: 0;
+                    }
+                    
+                    @keyframes colorFill {
+                        0% { opacity: 0; }
+                        100% { opacity: 1; }
+                    }
+                    
+                    .whale-fill-dark {
+                        fill: #87CEEB;
+                        animation: colorFill 2s ease-in-out 3s forwards;
+                        opacity: 0;
+                    }
+                    
+                    /* Eye animation */
+                    .eye {
+                        animation: blink 3s ease-in-out 5s infinite;
+                    }
+                    
+                    @keyframes blink {
+                        0%, 100% { r: 8; }
+                        50% { r: 2; }
+                    }
+                </style>
+            </defs>
+            
+            <!-- Background -->
+            <rect width="800" height="600" fill="#87CEEB"/>
+            
+            <!-- Waves background -->
+            <g class="wave-group1">
+                <path d="M0,450 Q50,430 100,450 T200,450 T300,450 T400,450 T500,450 T600,450 T700,450 T800,450" 
+                      stroke="#4da6ff" stroke-width="3" fill="none" opacity="0.5"/>
+                <path d="M0,480 Q50,460 100,480 T200,480 T300,480 T400,480 T500,480 T600,480 T700,480 T800,480" 
+                      stroke="#4da6ff" stroke-width="2" fill="none" opacity="0.3"/>
+            </g>
+            
+            <g class="wave-group2">
+                <path d="M0,500 Q50,480 100,500 T200,500 T300,500 T400,500 T500,500 T600,500 T700,500 T800,500" 
+                      stroke="#1e90ff" stroke-width="2" fill="none" opacity="0.4"/>
+            </g>
+            
+            <!-- Whale group with swimming animation -->
+            <g class="whale">
+                <!-- Whale body outline (drawn first) -->
+                <ellipse class="whale-outline" cx="400" cy="280" rx="120" ry="60" 
+                         stroke="#333" stroke-width="3" fill="none"/>
+                
+                <!-- Whale body fill (colored) -->
+                <ellipse class="whale-fill" cx="400" cy="280" rx="115" ry="55"/>
+                <ellipse class="whale-fill-dark" cx="400" cy="260" rx="110" ry="35"/>
+                
+                <!-- Whale head detail -->
+                <circle class="whale-fill" cx="320" cy="270" r="40"/>
+                
+                <!-- Eye -->
+                <circle class="eye" cx="330" cy="260" r="8" fill="#000"/>
+                <circle cx="333" cy="257" r="3" fill="#fff"/>
+                
+                <!-- Blowhole -->
+                <circle class="whale-fill" cx="400" cy="210" r="5"/>
+                
+                <!-- Dorsal fin -->
+                <polygon class="whale-fill-dark" points="400,230 410,180 390,180"/>
+                
+                <!-- Tail flukes -->
+                <g class="tail">
+                    <ellipse class="whale-fill-dark" cx="500" cy="250" rx="35" ry="50" transform="rotate(-30 500 250)"/>
+                    <ellipse class="whale-fill-dark" cx="500" cy="310" rx="35" ry="50" transform="rotate(30 500 310)"/>
+                </g>
+                
+                <!-- Fin -->
+                <ellipse class="whale-fill-dark" cx="360" cy="330" rx="25" ry="45" opacity="0.7"/>
+            </g>
+            
+            <!-- Title -->
+            <text x="400" y="550" font-size="24" font-weight="bold" text-anchor="middle" fill="#333">
+                🐋 Whale Animation 🌊
+            </text>
+        </svg>
+    </div>
+</body>
+</html>
